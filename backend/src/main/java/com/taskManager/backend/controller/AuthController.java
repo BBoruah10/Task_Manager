@@ -1,8 +1,10 @@
 package com.taskManager.backend.controller;
 
+import com.taskManager.backend.dto.AuthRequest;
 import com.taskManager.backend.dto.AuthResponse;
 import com.taskManager.backend.dto.RegisterRequest;
 import com.taskManager.backend.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest req){
         var res=service.register(req);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest req){
+        var res=service.login(req);
         return ResponseEntity.ok(res);
     }
 }
