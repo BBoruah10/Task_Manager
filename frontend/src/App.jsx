@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Tasks from "./pages/Tasks";
+import CreateTask from "./pages/CreateTask";
 
 // Prevent logged-in users from going back to login/register
 const PublicRoute = ({ children }) => {
@@ -54,7 +55,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/create-task"
+            element={
+              <ProtectedRoute>
+                <CreateTask />
+              </ProtectedRoute>
+            }
+          />
           {/* Default Route */}
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
