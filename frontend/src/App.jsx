@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Tasks from "./pages/Tasks";
 import CreateTask from "./pages/CreateTask";
+import Home from "./pages/Home";
 
 // Prevent logged-in users from going back to login/register
 const PublicRoute = ({ children }) => {
@@ -19,7 +20,10 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+
+          <Route path="/" element={<Home />} />
           {/* Public Routes */}
+
           <Route
             path="/login"
             element={
@@ -64,7 +68,7 @@ function App() {
             }
           />
           {/* Default Route */}
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

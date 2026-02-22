@@ -1,7 +1,8 @@
-import { Bell, Search, ChevronDown, Moon, Sun, LogOut } from "lucide-react";
+import { Bell, Search, ChevronDown, Moon, Sun, LogOut,Home } from "lucide-react";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ThemeContext } from "../../context/ThemeContext";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ setSearchTerm, notifications }) => {
   const { logout, user } = useContext(AuthContext);
@@ -24,9 +25,22 @@ const Navbar = ({ setSearchTerm, notifications }) => {
     >
 
       {/* LEFT SIDE */}
-      <h2 className="text-lg font-semibold">
-        Dashboard
-      </h2>
+      <div className="flex items-center gap-4">
+        <Link
+          to="/"
+          className="
+            p-2 rounded-lg
+            hover:bg-gray-200 dark:hover:bg-gray-700
+            transition-colors duration-300
+          "
+        >
+          <Home size={20} />
+        </Link>
+
+        <h2 className="text-lg font-semibold">
+          Dashboard
+        </h2>
+      </div>
 
       {/* RIGHT SIDE */}
       <div className="flex items-center gap-6">

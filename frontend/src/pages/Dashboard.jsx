@@ -36,48 +36,62 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="dark:text-white">
-
+      <div
+        className="
+          min-h-screen
+          bg-gradient-to-br
+          from-blue-50 via-indigo-50 to-white
+          dark:from-slate-900 dark:via-slate-800 dark:to-slate-900
+          transition-colors duration-300
+          p-6
+        "
+      >
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Dashboard Overview</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
+        <div className="mb-10">
+          <h1 className="text-4xl font-extrabold tracking-tight dark:text-white">
+            Dashboard Overview
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2 text-lg">
             Manage and track your tasks efficiently
           </p>
         </div>
 
         {/* Search */}
-        <div className="mb-6">
+        <div className="mb-8">
           <input
             type="text"
             placeholder="Search tasks..."
-            className="w-full md:w-96 px-4 py-2 rounded-lg border 
-                       dark:bg-gray-800 dark:border-gray-700 
-                       dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+            className="
+              w-full md:w-96 px-4 py-3 rounded-xl border
+              bg-white dark:bg-gray-800
+              dark:border-gray-700
+              dark:text-white
+              shadow-sm
+              focus:ring-2 focus:ring-indigo-500
+              focus:border-indigo-500
+              outline-none transition-all duration-300
+            "
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <StatCard
             title="Total"
             value={total}
             gradient="from-blue-500 to-indigo-600"
           />
-
           <StatCard
             title="Todo"
             value={todo}
             gradient="from-yellow-400 to-orange-500"
           />
-
           <StatCard
             title="In Progress"
             value={inProgress}
             gradient="from-purple-500 to-pink-500"
           />
-
           <StatCard
             title="Completed"
             value={done}
@@ -86,8 +100,16 @@ const Dashboard = () => {
         </div>
 
         {/* Tasks Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">
+        <div
+          className="
+            bg-white dark:bg-gray-800
+            rounded-3xl shadow-xl
+            p-8
+            border border-gray-100 dark:border-gray-700
+            transition-all duration-300
+          "
+        >
+          <h2 className="text-2xl font-bold mb-6 dark:text-white">
             Recent Tasks
           </h2>
 
@@ -96,24 +118,27 @@ const Dashboard = () => {
           ) : filteredTasks.length === 0 ? (
             <p className="text-gray-500">No tasks found.</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-5">
               {filteredTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex justify-between items-center border-b pb-3 
-                             dark:border-gray-700"
+                  className="
+                    flex justify-between items-center
+                    border-b pb-4
+                    dark:border-gray-700
+                  "
                 >
                   <div>
-                    <h3 className="font-medium">
+                    <h3 className="font-semibold text-lg dark:text-white">
                       {task.title}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {task.description}
                     </p>
                   </div>
 
                   <span
-                    className={`px-3 py-1 text-xs rounded-full ${
+                    className={`px-4 py-1.5 text-xs font-semibold rounded-full ${
                       task.status === "DONE"
                         ? "bg-green-100 text-green-700 dark:bg-green-700 dark:text-white"
                         : task.status === "IN_PROGRESS"
@@ -128,35 +153,35 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-
       </div>
     </Layout>
   );
 };
 
 
-
-// 🔥 Attractive Gradient StatCard
+// 🔥 Animated Premium StatCard
 const StatCard = ({ title, value, gradient }) => {
   return (
     <div
       className={`
         relative overflow-hidden rounded-2xl p-6 text-white
         bg-gradient-to-r ${gradient}
-        shadow-xl hover:scale-105 transition-all duration-300
+        shadow-2xl
+        hover:-translate-y-1 hover:shadow-3xl
+        transition-all duration-300
+        animate-floatUp
       `}
     >
-      {/* Background Number */}
-      <div className="absolute right-4 top-4 opacity-20 text-6xl font-bold">
+      {/* Large Background Number */}
+      <div className="absolute right-4 top-4 opacity-10 text-7xl font-extrabold">
         {value}
       </div>
 
-      {/* Content */}
       <div className="relative z-10">
         <p className="text-sm uppercase tracking-wide opacity-80">
           {title}
         </p>
-        <h3 className="text-3xl font-bold mt-2">
+        <h3 className="text-4xl font-extrabold mt-2">
           {value}
         </h3>
       </div>

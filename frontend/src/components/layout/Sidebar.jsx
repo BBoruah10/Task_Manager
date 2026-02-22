@@ -6,39 +6,41 @@ import { AuthContext } from "../../context/AuthContext";
 const Sidebar = () => {
   const { logout } = useContext(AuthContext);
 
-  const linkStyle =
-    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200";
-
-  const activeStyle =
-    "bg-blue-600 text-white shadow-md";
-
-  const inactiveStyle =
-    "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800";
+  const baseStyle =
+    "flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300";
 
   return (
     <div
       className="
         h-screen w-64 flex flex-col justify-between
-        bg-white text-gray-900
-        dark:bg-gray-900 dark:text-gray-100
+        bg-gradient-to-b from-white via-blue-50 to-indigo-50
+        dark:from-slate-900 dark:via-slate-800 dark:to-slate-900
+        text-gray-800 dark:text-gray-100
         border-r border-gray-200 dark:border-gray-800
-        shadow-sm transition-colors duration-300
+        shadow-xl
+        transition-colors duration-300
       "
     >
       {/* Top Section */}
       <div>
+        {/* Logo */}
         <div className="px-6 py-6 border-b border-gray-200 dark:border-gray-800">
-          <h1 className="text-xl font-bold text-blue-600">
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             TaskManager
           </h1>
         </div>
 
-        <nav className="mt-6 space-y-2 px-4">
+        {/* Navigation */}
+        <nav className="mt-8 space-y-3 px-4">
 
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
+              `${baseStyle} ${
+                isActive
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
+                  : "hover:bg-blue-100 dark:hover:bg-slate-700"
+              }`
             }
           >
             <LayoutDashboard size={20} />
@@ -48,7 +50,11 @@ const Sidebar = () => {
           <NavLink
             to="/tasks"
             className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
+              `${baseStyle} ${
+                isActive
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
+                  : "hover:bg-blue-100 dark:hover:bg-slate-700"
+              }`
             }
           >
             <CheckSquare size={20} />
@@ -63,10 +69,11 @@ const Sidebar = () => {
         <button
           onClick={logout}
           className="
-            flex items-center gap-3 w-full px-4 py-3 rounded-lg
+            flex items-center gap-3 w-full px-4 py-3 rounded-xl
+            font-medium
             text-red-600 dark:text-red-400
-            hover:bg-red-50 dark:hover:bg-red-900/30
-            transition-all duration-200
+            hover:bg-red-100 dark:hover:bg-red-900/30
+            transition-all duration-300
           "
         >
           <LogOut size={20} />
