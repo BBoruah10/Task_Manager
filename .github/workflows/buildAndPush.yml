@@ -51,7 +51,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@v5
         with:
-          images: bhaskarboruah10/fullstack-frontend
+          images: bhaskarboruah10/taskmanager-frontend
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest
@@ -75,7 +75,7 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v5
         with:
-          images: bhaskarboruah10/fullstack-backend
+          images: bhaskarboruah10/taskmanager-backend
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest
