@@ -1,5 +1,7 @@
 import axios from "axios";
 
+//communicate with the backend
+//Axios returns a promise
 const API = axios.create({
   baseURL: "http://localhost:8080",
   headers: {
