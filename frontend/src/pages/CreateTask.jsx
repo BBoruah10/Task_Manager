@@ -7,14 +7,14 @@ import { PlusCircle } from "lucide-react";
 
 const CreateTask = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     status: "TODO",
+    assignedEmail: "",   // ✅ still required
   });
-
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -31,16 +31,22 @@ const CreateTask = () => {
       return;
     }
 
+    if (!formData.assignedEmail.trim()) {
+      toast.error("Assigned email is required");
+      return;
+    }
+
     try {
       setLoading(true);
 
       await API.post("/tasks", formData);
 
       toast.success("Task created successfully 🚀");
-
-      navigate("/tasks"); // redirect after create
+      navigate("/tasks");
     } catch (error) {
-      toast.error("Failed to create task");
+      toast.error(
+        error.response?.data?.message || "Failed to create task"
+      );
     } finally {
       setLoading(false);
     }
@@ -50,17 +56,15 @@ const CreateTask = () => {
     <Layout>
       <div className="max-w-2xl mx-auto dark:text-white">
 
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">
             Create New Task
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">
-            Add a new task to your workflow
+            Assign task to a user by email
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -116,6 +120,23 @@ const CreateTask = () => {
                 <option value="IN_PROGRESS">IN PROGRESS</option>
                 <option value="DONE">DONE</option>
               </select>
+            </div>
+
+            {/* Assigned Email */}
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Assign To (Email)
+              </label>
+              <input
+                type="email"
+                name="assignedEmail"
+                value={formData.assignedEmail}
+                onChange={handleChange}
+                placeholder="Enter user email"
+                className="w-full px-4 py-3 rounded-lg border 
+                           dark:bg-gray-900 dark:border-gray-700 
+                           focus:ring-2 focus:ring-blue-500 outline-none transition"
+              />
             </div>
 
             {/* Buttons */}
