@@ -16,4 +16,6 @@ public class RegisterRequest {
 
     @NotBlank
     private String password;
+
+    //private String role;
 }
