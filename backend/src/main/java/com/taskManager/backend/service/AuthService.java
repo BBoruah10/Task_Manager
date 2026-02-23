@@ -4,6 +4,7 @@ import com.taskManager.backend.dto.AuthRequest;
 import com.taskManager.backend.dto.AuthResponse;
 import com.taskManager.backend.dto.RegisterRequest;
 import com.taskManager.backend.exception.NotFoundException;
+import com.taskManager.backend.model.Role;
 import com.taskManager.backend.model.User;
 import com.taskManager.backend.repository.UserRepo;
 import jakarta.validation.Valid;
@@ -35,7 +36,9 @@ public class AuthService {
 
         User user=User.builder().name(req.getName())
                 .email(req.getEmail())
-                .password(encoder.encode(req.getPassword())).build();
+                .password(encoder.encode(req.getPassword()))
+                .role(Role.USER)
+                .build();
 
         repo.save(user);
         var token=jwtService.generateToken(user.getEmail());

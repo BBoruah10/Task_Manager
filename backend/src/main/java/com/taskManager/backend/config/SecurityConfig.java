@@ -43,10 +43,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(customizer -> customizer.disable());
         http.cors(cors -> {});
-        http.authorizeHttpRequests(requests->requests
-                .requestMatchers("/register","/login")
-                .permitAll()
-                .anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login","/register").permitAll()
+                .requestMatchers("/leader/**").hasRole("LEADER")
+                .anyRequest().authenticated()
+        );
 
         http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
