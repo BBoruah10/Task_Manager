@@ -1,20 +1,48 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import API from "../api/axios";
 import toast from "react-hot-toast";
 import { PlusCircle } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 const CreateTask = () => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);   // 🔥 store users
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     status: "TODO",
-    assignedEmail: "",   // ✅ still required
+    assignedEmail: "",
   });
+
+  // 🔐 Protect route
+  useEffect(() => {
+    if (user && user.role !== "LEADER") {
+      toast.error("Access Denied");
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  // 🔥 Fetch all users for dropdown
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await API.get("/leader/users");
+        setUsers(res.data);
+      } catch (err) {
+        toast.error("Failed to load users");
+      }
+    };
+
+    if (user?.role === "LEADER") {
+      fetchUsers();
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({
@@ -31,26 +59,28 @@ const CreateTask = () => {
       return;
     }
 
-    if (!formData.assignedEmail.trim()) {
-      toast.error("Assigned email is required");
+    if (!formData.assignedEmail) {
+      toast.error("Please select a user");
       return;
     }
 
     try {
       setLoading(true);
 
-      await API.post("/tasks", formData);
+      await API.post("leader/tasks", formData);
 
-      toast.success("Task created successfully 🚀");
-      navigate("/tasks");
+      toast.success("Task assigned successfully 🚀");
+      navigate("/dashboard");
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to create task"
+        error.response?.data?.message || "Failed to assign task"
       );
     } finally {
       setLoading(false);
     }
   };
+
+  if (!user) return null;
 
   return (
     <Layout>
@@ -58,10 +88,10 @@ const CreateTask = () => {
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold">
-            Create New Task
+            Assign Task
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">
-            Assign task to a user by email
+            Select a user and assign a task
           </p>
         </div>
 
@@ -79,7 +109,6 @@ const CreateTask = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="Enter task title"
                 className="w-full px-4 py-3 rounded-lg border 
                            dark:bg-gray-900 dark:border-gray-700 
                            focus:ring-2 focus:ring-blue-500 outline-none transition"
@@ -96,7 +125,6 @@ const CreateTask = () => {
                 rows="4"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Describe the task..."
                 className="w-full px-4 py-3 rounded-lg border 
                            dark:bg-gray-900 dark:border-gray-700 
                            focus:ring-2 focus:ring-blue-500 outline-none transition"
@@ -122,21 +150,29 @@ const CreateTask = () => {
               </select>
             </div>
 
-            {/* Assigned Email */}
+            {/* 🔥 User Dropdown */}
             <div>
               <label className="block text-sm font-medium mb-2">
-                Assign To (Email)
+                Assign To
               </label>
-              <input
-                type="email"
+              <select
                 name="assignedEmail"
                 value={formData.assignedEmail}
                 onChange={handleChange}
-                placeholder="Enter user email"
                 className="w-full px-4 py-3 rounded-lg border 
                            dark:bg-gray-900 dark:border-gray-700 
                            focus:ring-2 focus:ring-blue-500 outline-none transition"
-              />
+              >
+                <option value="">-- Select User --</option>
+
+                {users
+                  .filter((u) => u.role === "USER")  // 🔥 only members
+                  .map((u) => (
+                    <option key={u.id} value={u.email}>
+                      {u.name} ({u.email})
+                    </option>
+                  ))}
+              </select>
             </div>
 
             {/* Buttons */}
@@ -144,7 +180,7 @@ const CreateTask = () => {
 
               <button
                 type="button"
-                onClick={() => navigate("/tasks")}
+                onClick={() => navigate("/dashboard")}
                 className="w-full py-3 rounded-lg border 
                            dark:border-gray-600 hover:bg-gray-100 
                            dark:hover:bg-gray-700 transition"
@@ -163,7 +199,7 @@ const CreateTask = () => {
                            disabled:opacity-60"
               >
                 <PlusCircle size={18} />
-                {loading ? "Creating..." : "Create Task"}
+                {loading ? "Assigning..." : "Assign Task"}
               </button>
 
             </div>

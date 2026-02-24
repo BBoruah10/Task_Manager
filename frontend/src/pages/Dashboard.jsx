@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import API from "../api/axios";
 import Layout from "../components/layout/Layout";
+import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);   //  get logged-in user
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,10 @@ const Dashboard = () => {
   const fetchTasks = async () => {
     try {
       setLoading(true);
+
+      // backend endpoint
       const res = await API.get("/tasks");
+
       setTasks(res.data);
     } catch (err) {
       console.error(err);
@@ -46,14 +51,40 @@ const Dashboard = () => {
           p-6
         "
       >
-        {/* Page Header */}
+        {/* 🔥 Welcome Section Added */}
         <div className="mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight dark:text-white">
-            Dashboard Overview
+            Welcome, {user?.name} 👋
           </h1>
+
           <p className="text-gray-600 dark:text-gray-400 mt-2 text-lg">
-            Manage and track your tasks efficiently
+            Role:{" "}
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                user?.role === "LEADER"
+                  ? "bg-purple-100 text-purple-700 dark:bg-purple-700 dark:text-white"
+                  : "bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-white"
+              }`}
+            >
+              {user?.role}
+            </span>
           </p>
+
+          {user?.role === "LEADER" && (
+            <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+              You can create and assign tasks to members.
+            </p>
+          )}
+          {user?.role === "LEADER" && (
+          <div className="mt-4">
+            <button
+              onClick={() => window.location.href = "/create-task"}
+              className="bg-indigo-600 text-white px-5 py-2 rounded-xl shadow hover:bg-indigo-700 transition"
+            >
+              + Create New Task
+            </button>
+  </div>
+)}
         </div>
 
         {/* Search */}
@@ -110,7 +141,7 @@ const Dashboard = () => {
           "
         >
           <h2 className="text-2xl font-bold mb-6 dark:text-white">
-            Recent Tasks
+            My Tasks
           </h2>
 
           {loading ? (
@@ -169,10 +200,8 @@ const StatCard = ({ title, value, gradient }) => {
         shadow-2xl
         hover:-translate-y-1 hover:shadow-3xl
         transition-all duration-300
-        animate-floatUp
       `}
     >
-      {/* Large Background Number */}
       <div className="absolute right-4 top-4 opacity-10 text-7xl font-extrabold">
         {value}
       </div>

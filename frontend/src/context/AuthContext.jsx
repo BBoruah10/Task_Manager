@@ -1,36 +1,60 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import API from "../api/axios";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
 
- 
+  // 🔥 Use undefined as initial state
+  const [user, setUser] = useState(undefined);
 
+  // 🔁 Restore session on refresh
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const name = localStorage.getItem("name");
+
+    if (token && role && name) {
+      setUser({ token, role, name });
+    } else {
+      setUser(null);  // 🔥 important
+    }
+  }, []);
+
+  // 🔐 LOGIN
   const login = async (email, password) => {
     const res = await API.post("/login", { email, password });
+
     localStorage.setItem("token", res.data.token);
-    setToken(res.data.token);
+    localStorage.setItem("role", res.data.role);
+    localStorage.setItem("name", res.data.name);
+
+    setUser({
+      token: res.data.token,
+      role: res.data.role,
+      name: res.data.name,
+    });
   };
 
-  const register = async (name, email, password, role) => {
-    const res = await API.post("/register", {
+  // 📝 REGISTER
+  const register = async (name, email, password) => {
+    await API.post("/register", {
       name,
       email,
-      password
+      password,
     });
-    localStorage.setItem("token", res.data.token);
-    setToken(res.data.token);
+
+    await login(email, password);
   };
 
+  // 🚪 LOGOUT
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
+    localStorage.clear();
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
