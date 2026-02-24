@@ -42,7 +42,7 @@ public class AuthService {
 
         repo.save(user);
         var token=jwtService.generateToken(user.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token,user.getRole().name(), user.getName());
     }
 
     public AuthResponse login(@Valid AuthRequest req) {
@@ -54,6 +54,6 @@ public class AuthService {
         }
         User user = repo.findByEmail(req.getEmail()).orElseThrow(() -> new NotFoundException("User not found"));
         var token = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token,user.getRole().name(), user.getName());
     }
 }
