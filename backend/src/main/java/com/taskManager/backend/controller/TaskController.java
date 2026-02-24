@@ -41,8 +41,8 @@ public class TaskController {
         return service.updateStatus(id, status);
     }
 
-    @GetMapping("tasks/assigned")
     @PreAuthorize("hasAuthority('LEADER')")
+    @GetMapping("/leader/tasks/assigned")
     public ResponseEntity<List<TaskResponse>> getAssignedTasks(Authentication authentication) {
         return ResponseEntity.ok(
                 service.getTasksCreatedBy(authentication.getName())

@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Tasks from "./pages/Tasks";
 import CreateTask from "./pages/CreateTask";
 import Home from "./pages/Home";
+import AssignedTasks from "./pages/AssignedTasks";
 
 // Prevent logged-in users from going back to login/register
 const PublicRoute = ({ children }) => {
@@ -64,6 +65,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateTask />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/assigned-tasks"
+            element={
+              <ProtectedRoute role="LEADER">
+                <AssignedTasks />
               </ProtectedRoute>
             }
           />

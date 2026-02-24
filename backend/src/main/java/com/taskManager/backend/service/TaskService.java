@@ -83,7 +83,10 @@ public class TaskService {
     }
 
     public @Nullable List<TaskResponse> getTasksCreatedBy(String leaderEmail) {
-        return repo.findByCreatedBy(leaderEmail)
+        User leader = userRepo.findByEmail(leaderEmail)
+                .orElseThrow(() -> new RuntimeException("Leader not found"));
+
+        return repo.findByCreatedBy(leader)
                 .stream()
                 .map(this::mapToResponse)
                 .toList();

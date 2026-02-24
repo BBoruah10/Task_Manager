@@ -1,13 +1,19 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, CheckSquare, LogOut } from "lucide-react";
+import { LayoutDashboard, CheckSquare, ClipboardList, LogOut } from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 const Sidebar = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext);
 
   const baseStyle =
     "flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300";
+
+  const activeStyle =
+    "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg";
+
+  const inactiveStyle =
+    "hover:bg-blue-100 dark:hover:bg-slate-700";
 
   return (
     <div
@@ -33,33 +39,40 @@ const Sidebar = () => {
         {/* Navigation */}
         <nav className="mt-8 space-y-3 px-4">
 
+          {/* Dashboard */}
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              `${baseStyle} ${
-                isActive
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "hover:bg-blue-100 dark:hover:bg-slate-700"
-              }`
+              `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
             }
           >
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </NavLink>
 
+          {/* Tasks */}
           <NavLink
             to="/tasks"
             className={({ isActive }) =>
-              `${baseStyle} ${
-                isActive
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                  : "hover:bg-blue-100 dark:hover:bg-slate-700"
-              }`
+              `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
             }
           >
             <CheckSquare size={20} />
             <span>Tasks</span>
           </NavLink>
+
+          {/* 👑 Assigned Tasks (LEADER ONLY) */}
+          {user?.role === "LEADER" && (
+            <NavLink
+              to="/assigned-tasks"
+              className={({ isActive }) =>
+                `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
+              }
+            >
+              <ClipboardList size={20} />
+              <span>Assigned Tasks</span>
+            </NavLink>
+          )}
 
         </nav>
       </div>
