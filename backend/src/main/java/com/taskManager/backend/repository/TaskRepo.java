@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends JpaRepository<Tasks,Integer> {
     List<Tasks> findByAssignedTo_Email(String email);
+    List<Tasks> findByCreatedBy(String createdBy);
 }

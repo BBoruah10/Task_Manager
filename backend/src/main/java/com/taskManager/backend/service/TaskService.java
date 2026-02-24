@@ -8,6 +8,7 @@ import com.taskManager.backend.model.User;
 import com.taskManager.backend.repository.TaskRepo;
 import com.taskManager.backend.repository.UserRepo;
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,5 +80,12 @@ public class TaskService {
         repo.save(task);
 
         return mapToResponse(task);
+    }
+
+    public @Nullable List<TaskResponse> getTasksCreatedBy(String leaderEmail) {
+        return repo.findByCreatedBy(leaderEmail)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 }

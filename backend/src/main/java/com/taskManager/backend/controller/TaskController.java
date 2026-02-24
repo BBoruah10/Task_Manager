@@ -40,4 +40,12 @@ public class TaskController {
                                      @RequestParam TaskStatus status) {
         return service.updateStatus(id, status);
     }
+
+    @GetMapping("tasks/assigned")
+    @PreAuthorize("hasAuthority('LEADER')")
+    public ResponseEntity<List<TaskResponse>> getAssignedTasks(Authentication authentication) {
+        return ResponseEntity.ok(
+                service.getTasksCreatedBy(authentication.getName())
+        );
+    }
 }
