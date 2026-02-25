@@ -1,5 +1,5 @@
 version: "3.9"
-
+#compose
 services:
   db:
     image: postgres:15
@@ -34,6 +34,7 @@ services:
       - "3000:80"
     depends_on:
       - backend
+
 
 volumes:
   db_data:
