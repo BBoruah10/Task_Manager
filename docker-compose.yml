@@ -14,8 +14,8 @@ services:
       - "5432:5432"
 
   backend:
-    image: bhaskarboruah10/taskmanager-backend:1.0.2
-    #build: ./backend
+    #image: bhaskarboruah10/taskmanager-backend:1.0.2
+    build: ./backend
     container_name: spring-backend
     ports:
       - "8080:8080"
@@ -27,8 +27,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
   frontend:
-    image: bhaskarboruah10/taskmanager-frontend:1.0.2
-    #build: ./frontend
+    #image: bhaskarboruah10/taskmanager-frontend:1.0.2
+    build: ./frontend
     container_name: react-frontend
     ports:
       - "3000:80"
