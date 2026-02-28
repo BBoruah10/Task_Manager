@@ -11,7 +11,6 @@ spec:
       http:
         paths:
 
-          # backend routes
           - path: /login
             pathType: Prefix
             backend:
@@ -44,7 +43,6 @@ spec:
                 port:
                   number: 8080
 
-          # frontend (must be last)
           - path: /
             pathType: Prefix
             backend:

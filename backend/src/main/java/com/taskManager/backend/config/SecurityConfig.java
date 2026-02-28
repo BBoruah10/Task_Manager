@@ -57,6 +57,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/leader/**").hasRole("LEADER")
 
+                        .requestMatchers("/tasks/**").hasAnyRole("LEADER","ROLE")
+
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

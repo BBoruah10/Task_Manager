@@ -25,8 +25,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+  if (user) {
     fetchTasks();
-  }, []);
+  }
+}, [user]);
 
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchTerm.toLowerCase())
