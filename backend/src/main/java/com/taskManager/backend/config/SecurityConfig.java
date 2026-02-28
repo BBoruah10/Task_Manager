@@ -40,19 +40,28 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(customizer -> customizer.disable());
-        http.cors(cors -> {});
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login","/register").permitAll()
-                .requestMatchers("/leader/**").hasRole("LEADER")
-                .anyRequest().authenticated()
-        );
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers(
+                                "/login",
+                                "/register"
+                        ).permitAll()
+
+                        .requestMatchers("/leader/**").hasRole("LEADER")
+
+                        .anyRequest().authenticated()
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
-
-
     }
 }

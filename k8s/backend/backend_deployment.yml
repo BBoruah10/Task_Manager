@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: bhaskarboruah10/taskmanager-backend:1.0.4
+          image: bhaskarboruah10/taskmanager-backend:1.0.5
           ports:
             - containerPort: 8080
           env:
