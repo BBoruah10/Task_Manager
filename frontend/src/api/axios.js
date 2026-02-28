@@ -2,6 +2,7 @@ import axios from "axios";
 
 //communicate with the backend
 //Axios returns a promise
+//connect to backend using ingress
 const API = axios.create({
   baseURL: "",
   headers: {
