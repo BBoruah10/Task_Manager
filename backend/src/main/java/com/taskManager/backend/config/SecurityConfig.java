@@ -57,7 +57,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/leader/**").hasRole("LEADER")
 
-                        .requestMatchers("/tasks/**").hasAnyRole("LEADER","ROLE")
+                        .requestMatchers("/tasks/**").hasAnyRole("LEADER","USER")
 
                         .anyRequest().authenticated()
                 )

@@ -5,11 +5,13 @@ import com.taskManager.backend.model.User;
 import com.taskManager.backend.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@EnableMethodSecurity
 @RequestMapping("/leader")
 public class LeaderController {
 

@@ -20,14 +20,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "bXlTdXBlclNlY3JldEtleU15U3VwZXJTZWNyZXRLZXlNeVN1cGVyU2VjcmV0S2V5"; // example 64+ chars Base64
+     // example 64+ chars Base64
 
-    // Generate JWT token
-    private String secretKey;
+    private final String secretKey = System.getenv("JWT_SECRET");
 
-    public JwtService() {
-        secretKey = generateSecretKey();
-    }
 
 
 

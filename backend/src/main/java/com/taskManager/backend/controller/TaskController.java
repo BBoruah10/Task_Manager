@@ -9,20 +9,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class TaskController {
 
     @Autowired
     private TaskService service;
 
-    @PreAuthorize("hasAuthority('LEADER')")
+    @PreAuthorize("hasRole('LEADER')")
     @PostMapping("/leader/tasks")
     public ResponseEntity<TaskResponse> createTasks(@Valid @RequestBody TaskRequest req, Authentication authentication){
         var task=service.createTasks(req,authentication.getName());
@@ -41,7 +42,7 @@ public class TaskController {
         return service.updateStatus(id, status);
     }
 
-    @PreAuthorize("hasAuthority('LEADER')")
+    @PreAuthorize("hasRole('LEADER')")
     @GetMapping("/leader/tasks/assigned")
     public ResponseEntity<List<TaskResponse>> getAssignedTasks(Authentication authentication) {
         return ResponseEntity.ok(
