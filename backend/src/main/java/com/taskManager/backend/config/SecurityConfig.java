@@ -52,7 +52,8 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 "/login",
-                                "/register"
+                                "/register",
+                                "/actuator/**"
                         ).permitAll()
 
                         .requestMatchers("/leader/**").hasRole("LEADER")
