@@ -1,0 +1,41 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+
+      - name: Check kubectl
+        run: kubectl get nodes
+
+
+      - name: Apply Postgres
+        run: kubectl apply -f k8s/postgres/
+
+
+      - name: Apply Backend
+        run: kubectl apply -f k8s/backend/
+
+
+      - name: Apply Frontend
+        run: kubectl apply -f k8s/frontend/
+
+
+      - name: Apply Ingress
+        run: kubectl apply -f k8s/ingress/
+
+
+      - name: Restart backend
+        run: kubectl rollout restart deployment backend
+
+
+      - name: Restart frontend
+        run: kubectl rollout restart deployment frontend
