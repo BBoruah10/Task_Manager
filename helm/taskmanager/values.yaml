@@ -1,0 +1,43 @@
+postgres:
+  image: postgres:15
+
+  db: postgres10
+  user: admin
+  password: password
+
+  storage: 1Gi
+
+  servicePort: 5432
+
+backend:
+  image: bhaskarboruah10/taskmanager-backend
+  tag: "1.0.9"
+
+  replicas: 2
+
+  servicePort: 8080
+
+  datasourceUrl: jdbc:postgresql://postgres-service:5432/postgres10
+
+  jwtSecret: mySuperSecretKeyMySuperSecretKeyMySuperSecretKey
+
+frontend:
+  image: bhaskarboruah10/taskmanager-frontend
+  tag: "1.0.9"
+
+  replicas: 1
+
+  servicePort: 80
+
+ingress:
+  enabled: true
+
+  className: nginx
+
+  host: taskmanager.local
+
+  backendService: backend-service
+  backendPort: 8080
+
+  frontendService: frontend-service
+  frontendPort: 80

@@ -1,0 +1,56 @@
+{{- if .Values.ingress.enabled }}
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taskmanager-ingress
+
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.backendService }}
+                port:
+                  number: {{ .Values.ingress.backendPort }}
+
+          - path: /register
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.backendService }}
+                port:
+                  number: {{ .Values.ingress.backendPort }}
+
+          - path: /tasks
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.backendService }}
+                port:
+                  number: {{ .Values.ingress.backendPort }}
+
+          - path: /leader
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.backendService }}
+                port:
+                  number: {{ .Values.ingress.backendPort }}
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.frontendService }}
+                port:
+                  number: {{ .Values.ingress.frontendPort }}
+
+{{- end }}

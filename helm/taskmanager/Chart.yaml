@@ -1,0 +1,15 @@
+apiVersion: v2
+name: taskmanager
+description: Task Manager Full Stack Helm Chart
+type: application
+version: 0.1.0
+appVersion: "1.0.9"
+keywords:
+  - taskmanager
+  - springboot
+  - react
+  - postgres
+  - kubernetes
+  - helm
+maintainers:
+  - name: Bhaskar
