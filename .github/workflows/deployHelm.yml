@@ -1,0 +1,26 @@
+name: Deploy with Helm
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+
+      - name: Check kubectl
+        run: kubectl get nodes
+
+
+      - name: Check helm
+        run: helm version
+
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install taskmanager helm/taskmanager
